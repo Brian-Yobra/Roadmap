@@ -6,11 +6,8 @@ from dotenv import load_dotenv
 
 load_dotenv()
 
-# PostgreSQL connection URL (using psycopg3)
-DATABASE_URL = os.getenv(
-    "DATABASE_URL",
-    "postgresql+psycopg://myuser:TO_DO@localhost:5432/mydatabase"
-)
+
+DATABASE_URL = os.getenv("DATABASE_URL")
 
 engine = create_engine(DATABASE_URL)
 SessionLocal = sessionmaker(autocommit=False, autoflush=False, bind=engine)
