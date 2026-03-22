@@ -6,13 +6,20 @@ from dotenv import load_dotenv
 
 load_dotenv()
 
-# PostgreSQL connection URL (using psycopg3)
-DATABASE_URL = os.getenv(
-    "DATABASE_URL",
-    "postgresql+psycopg://myuser:TO_DO@localhost:5432/mydatabase"
-)
+# PostgreSQL connection URL
+DATABASE_URL = os.getenv("DATABASE_URL")
+
+if DATABASE_URL:
+    # This handles "postgres://" AND "postgresql://" 
+    # and forces the use of the psycopg (v3) driver
+    if DATABASE_URL.startswith("postgres://"):
+        DATABASE_URL = DATABASE_URL.replace("postgres://", "postgresql+psycopg://", 1)
+    elif DATABASE_URL.startswith("postgresql://"):
+        DATABASE_URL = DATABASE_URL.replace("postgresql://", "postgresql+psycopg://", 1)
 
 engine = create_engine(DATABASE_URL)
+
+
 SessionLocal = sessionmaker(autocommit=False, autoflush=False, bind=engine)
 
 Base = declarative_base()
