@@ -9,13 +9,13 @@ Base.metadata.create_all(bind=engine)
 app = FastAPI(
     title="Todo Canvas API",
     description="A modular canvas-based Todo List API",
-    version="4.0.0"
+    version="1.0.0"
 )
 
 # CORS middleware for frontend communication
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=["http://localhost:3000"],
+    allow_origins=["*"],
     allow_credentials=True,
     allow_methods=["*"],
     allow_headers=["*"],
@@ -30,3 +30,7 @@ app.include_router(links.router)
 def root():
     """Health check endpoint"""
     return {"message": "Todo Canvas API is running", "status": "healthy"}
+
+if __name__ == "__main__":
+    import uvicorn
+    uvicorn.run(app, host="0.0.0.0", port=8000)
